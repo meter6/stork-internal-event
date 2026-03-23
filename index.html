@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>送子鳥 × HAY | 限定優惠</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #F9F8F4; color: #333; }
+    </style>
+    
+    <script>
+        window.onload = function() {
+            const password = prompt("請輸入送子鳥同仁專屬口令：");
+            if (password !== "stork888") {
+                alert("密碼錯誤，將導回首頁");
+                window.location.href = "https://www.stork.com.tw/";
+            }
+        };
+
+        function order(productName) {
+            const message = "您好，我想預訂【" + productName + "】組合。";
+            alert(message + "\n\n(系統即將導向預約登記表單)");
+            // 請在此處換上您的 Google 表單連結
+            window.open("https://forms.gle/您的表單連結", "_blank");
+        }
+    </script>
+</head>
+<body>
+
+    <header class="py-20 px-10 text-center">
+        <h1 class="text-4xl font-light tracking-widest mb-4">HAY at STORK</h1>
+        <p class="text-gray-500 italic">給勇敢且優雅的妳 — 限量聯名組合</p>
+        <div class="mt-4 text-sm text-gray-400">活動期間：2025.11.19 - 2026.02.19 [cite: 2]</div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 pb-20">
+        <div class="grid md:grid-cols-3 gap-12">
+            
+            <div class="bg-white p-8 shadow-sm hover:shadow-md transition">
+                <div class="bg-gray-100 aspect-square mb-6 flex items-center justify-center">
+                    <p class="text-gray-400 text-center px-4">[PAO 奶油白燈圖片]</p>
+                </div>
+                <h3 class="text-xl mb-2 font-bold">暖心哺育組</h3>
+                <p class="text-sm text-gray-500 mb-4">PAO 奶油白便攜燈 + 專屬蛋寶 [cite: 99, 101]</p>
+                <div class="flex justify-between items-end">
+                    <div>
+                        <span class="text-xs line-through text-gray-400">NT$ 5,680</span>
+                        <p class="text-2xl font-bold text-red-800">NT$ 5,112</p>
+                    </div>
+                    <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 mb-1">現貨僅 2 組 [cite: 118]</span>
+                </div>
+                <button onclick="order('暖心哺育組')" class="w-full mt-6 bg-stone-800 text-white py-3 hover:bg-stone-700 transition">立即預約領取</button>
+            </div>
+
+            <div class="bg-white p-8 shadow-sm hover:shadow-md transition">
+                <div class="bg-gray-100 aspect-square mb-6 flex items-center justify-center border-l-4 border-green-200">
+                    <p class="text-gray-400 text-center px-4">[抹茶綠毛巾組圖片]</p>
+                </div>
+                <h3 class="text-xl mb-2 font-bold">自然有機組</h3>
+                <p class="text-sm text-gray-500 mb-4">抹茶綠浴巾 + 毛巾 + 蛋寶 [cite: 68, 71, 73, 75]</p>
+                <div class="flex justify-between items-end">
+                    <div>
+                        <span class="text-xs line-through text-gray-400">NT$ 3,280</span>
+                        <p class="text-2xl font-bold text-red-800">NT$ 2,952</p>
+                    </div>
+                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 mb-1">限量現貨 [cite: 117]</span>
+                </div>
+                <button onclick="order('自然有機組')" class="w-full mt-6 bg-stone-800 text-white py-3 hover:bg-stone-700 transition">立即預約領取</button>
+            </div>
+
+            <div class="bg-white p-8 shadow-sm hover:shadow-md transition">
+                <div class="bg-gray-100 aspect-square mb-6 flex items-center justify-center border-l-4 border-blue-200">
+                    <p class="text-gray-400 text-center px-4">[辦公生活組圖片]</p>
+                </div>
+                <h3 class="text-xl mb-2 font-bold">職人辦公組</h3>
+                <p class="text-sm text-gray-500 mb-4">海軍藍托特包 + 筷子組 [cite: 52, 53, 81, 82]</p>
+                <div class="flex justify-between items-end">
+                    <div>
+                        <span class="text-xs line-through text-gray-400">NT$ 1,500</span>
+                        <p class="text-2xl font-bold text-red-800">NT$ 1,350</p>
+                    </div>
+                    <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 mb-1">現貨 2 組 [cite: 117]</span>
+                </div>
+                <button onclick="order('職人辦公組')" class="w-full mt-6 bg-stone-800 text-white py-3 hover:bg-stone-700 transition">立即預約領取</button>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="text-center pb-20 text-gray-400 text-xs">
+        <p class="mb-2">● 本頁面僅供預約登記，請至櫃檯現場付款領取</p>
+        <p>● 套組品項皆不拆售，數量有限售完為止 [cite: 17, 31, 46]</p>
+    </footer>
+
+</body>
+</html>
