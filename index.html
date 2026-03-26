@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HAY at STORK | 限定特惠預訂系統</title>
+    <title>HAY at IART | 限定特惠預訂系統</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap');
@@ -58,7 +58,7 @@
         function clearCart() { cart = []; renderCart(); document.getElementById('cart-box').classList.add('hidden'); }
 
         function checkout() {
-            let text = "【HAY at STORK 預訂明細】\n";
+            let text = "【HAY at IART 預訂明細】\n";
             cart.forEach(item => text += `- ${item.name} (${item.colors}) NT$ ${item.price}\n`);
             text += `\n總計金額：NT$ ${cart.reduce((a,b)=>a+b.price, 0).toLocaleString()}\n\n※請將此清單貼上至表單備註。`;
             navigator.clipboard.writeText(text).then(() => {
@@ -71,7 +71,7 @@
 <body>
 
     <header class="py-12 px-6 text-center bg-white border-b border-gray-100">
-        <h1 class="text-3xl font-light tracking-[0.3em] mb-2">HAY at STORK</h1>
+        <h1 class="text-3xl font-light tracking-[0.3em] mb-2">HAY at IART</h1>
         <p class="text-gray-400 text-xs tracking-widest uppercase">Member Exclusive Collection</p>
     </header>
 
@@ -84,7 +84,7 @@
     <section id="tab1" class="tab-content active max-w-6xl mx-auto p-6 space-y-16">
         <div>
             <h2 class="text-center text-xl font-bold mb-2 tracking-widest text-gray-400 uppercase">限定蛋寶聯名組</h2>
-            <p class="text-center text-[10px] text-gray-500 mb-8 font-light italic">購買下列組合任一組，即可獲得送子鳥限定粉藍/粉紅蛋寶吊飾一個（顏色隨機）</p>
+            <p class="text-center text-[12px] text-gray-500 mb-8 font-light italic">購買下列組合任一組，即可獲得送子鳥限定粉藍/粉紅蛋寶吊飾一個（顏色隨機）</p>
             <div class="grid md:grid-cols-3 gap-6">
                 <div class="product-card">
                     <div class="img-placeholder"><img src="combo_warm.jpg" alt="暖心呵護"></div>
@@ -110,19 +110,19 @@
                 </div>
                 <div class="product-card">
                     <div class="img-placeholder"><img src="combo_tea.jpg" alt="午茶食光"></div>
-                    <h3 class="font-bold">午茶食光</h3>
+                    <h3 class="font-bold">午後食光</h3>
                     <p class="text-[10px] text-gray-400 mb-4 leading-relaxed">Barro Plate (Ø24) + Barro Cup 杯子</p>
                     <div class="space-y-2 mb-4">
                         <select id="t1-c5" class="w-full text-xs border p-1 rounded"><option value="">Barro 系列顏色以現場為準</option><option>米白</option><option>深藍</option><option>綠色</option></select>
                     </div>
                     <p class="text-lg font-bold">NT$ 4,200</p>
-                    <button onclick="addCombo('午茶食光', 4200, ['t1-c5'])" class="w-full mt-4 bg-black text-white py-2 text-xs">加入預訂清單</button>
+                    <button onclick="addCombo('午後食光', 4200, ['t1-c5'])" class="w-full mt-4 bg-black text-white py-2 text-xs">加入預訂清單</button>
                 </div>
             </div>
         </div>
 
         <div>
-            <h2 class="text-center text-xl font-bold mb-8 tracking-widest text-gray-400 uppercase">經典初期特惠組</h2>
+            <h2 class="text-center text-xl font-bold mb-8 tracking-widest text-gray-400 uppercase">IART特惠組</h2>
             <div class="grid md:grid-cols-2 gap-6">
                 <div class="product-card">
                     <div class="img-placeholder"><img src="combo_spirit.jpg" alt="Free Spirit"></div>
