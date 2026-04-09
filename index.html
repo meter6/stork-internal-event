@@ -287,8 +287,10 @@ function checkout() {
 }
 
 // 頁面載入後啟動
-document.addEventListener('DOMContentLoaded', initData);
-document.getElementById('pw-input').addEventListener('keypress', (e) => { if(e.key==='Enter') checkPassword(); });
+document.addEventListener('DOMContentLoaded', function() {
+  initData();
+  document.getElementById('pw-input').addEventListener('keypress', (e) => { if(e.key==='Enter') checkPassword(); });
+});
 </script>
 </body>
 </html>
