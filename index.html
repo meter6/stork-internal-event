@@ -1,338 +1,259 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HAY at STORK | 全品項預訂系統</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap');
-        body { font-family: 'Noto Sans TC', sans-serif; background-color: #F9F8F4; color: #333; }
-        .tab-content { display: none; }
-        .active { display: block; }
-        .tab-btn.active-btn { border-bottom: 2px solid #333; color: #000; font-weight: bold; }
-        .product-card { background: white; padding: 1.5rem; border: 1px solid #eee; transition: all 0.3s; display: flex; flex-direction: column; }
-        .product-card:hover { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-        .img-placeholder { background-color: #f3f4f6; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; overflow: hidden; }
-        .img-placeholder img { max-height: 100%; max-width: 100%; object-fit: contain; }
-    </style>
-    
-    <script>
-        // 【六】私密密碼驗證
-        window.onload = function() {
-            const password = prompt("請輸入送子鳥邀請碼：");
-            if (password !== "stork888") {
-                alert("驗證失敗，將導回官網。");
-                window.location.href = "https://www.stork.com.tw/";
-            }
-        };
-
-        function showTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-btn'));
-            document.getElementById(tabId).classList.add('active');
-            document.getElementById('btn-' + tabId).classList.add('active-btn');
-        }
-
-        let cart = [];
-        function addCombo(name, price, selectIds) {
-            let colors = selectIds.map(id => {
-                let el = document.getElementById(id);
-                return el ? el.value : "";
-            }).filter(v => v !== "" && v !== "選擇顏色").join(', ');
-            cart.push({ name, price, colors });
-            renderCart();
-            document.getElementById('cart-box').classList.remove('hidden');
-        }
-
-        function renderCart() {
-            let html = ""; let total = 0;
-            cart.forEach(item => {
-                html += `<div class="flex justify-between text-[10px] mb-2 border-b border-gray-50 pb-1"><span>${item.name}<br><span class="text-gray-400">${item.colors}</span></span><span>$${item.price}</span></div>`;
-                total += item.price;
-            });
-            document.getElementById('cart-items').innerHTML = html;
-            document.getElementById('cart-total').innerText = "NT$ " + total.toLocaleString();
-        }
-
-        function clearCart() { cart = []; renderCart(); document.getElementById('cart-box').classList.add('hidden'); }
-
-        function checkout() {
-            let text = "【HAY at STORK 預訂申請】\n";
-            cart.forEach(item => text += `- ${item.name} (${item.colors}) NT$ ${item.price}\n`);
-            text += `\n總計金額：NT$ ${cart.reduce((a,b)=>a+b.price, 0).toLocaleString()}\n\n※請將此內容貼上至表單備註。`;
-            navigator.clipboard.writeText(text).then(() => {
-                alert("清單已複製！即將轉往預訂表單。");
-                window.open("https://docs.google.com/forms/d/e/1FAIpQLSfMJN09-IEJ-3DiNYYiqCWelztKaOmp305_hpbOMk0QG0watw/viewform?usp=sf_link", "_blank");
-            });
-        }
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HAY at IART | 全品項預訂系統</title>
+<style>
+/* CSS 保持不變，已確認支援 btn-special 視覺效果 */
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'PingFang TC','Microsoft JhengHei','Noto Sans TC',sans-serif; background:#F9F8F4; color:#333; font-size:14px; line-height:1.6; }
+#pw-gate { position:fixed; inset:0; background:#F9F8F4; display:flex; align-items:center; justify-content:center; z-index:999; }
+.pw-box { background:#fff; border:1px solid #ddd; border-radius:10px; padding:2.5rem 2rem; text-align:center; width:320px; }
+.pw-box h2 { font-size:18px; font-weight:300; letter-spacing:0.2em; margin-bottom:6px; }
+.pw-box p { font-size:12px; color:#999; margin-bottom:1.5rem; }
+.pw-box input { width:100%; padding:10px 12px; border:1px solid #ccc; border-radius:6px; font-size:14px; font-family:inherit; margin-bottom:10px; text-align:center; letter-spacing:0.15em; }
+.pw-btn { width:100%; padding:10px; background:#111; color:#fff; border:none; border-radius:6px; font-size:13px; cursor:pointer; }
+header { text-align:center; padding:3rem 1.5rem 1.5rem; background:#fff; border-bottom:1px solid #eee; }
+header h1 { font-size:1.8rem; font-weight:300; letter-spacing:0.3em; margin-bottom:6px; }
+.notice { max-width:560px; margin:1.2rem auto 0; background:#f5f4ef; border:1px solid #ddd; border-radius:8px; padding:1rem 1.25rem; font-size:12px; color:#555; text-align:left; }
+nav { display:flex; justify-content:center; background:#fff; border-bottom:1px solid #eee; position:sticky; top:0; z-index:100; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+.tab-btn { padding:14px 24px; font-size:13px; border:none; border-bottom:2px solid transparent; background:transparent; color:#888; cursor:pointer; }
+.tab-btn.active { color:#111; border-bottom-color:#111; font-weight:700; }
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+.wrap { max-width:1100px; margin:0 auto; padding:2rem 1.5rem; }
+.section-title { text-align:center; font-size:12px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:#aaa; margin-bottom:6px; }
+.grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; max-width:680px; margin:0 auto; }
+.grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+@media(max-width:860px){ .grid-3,.grid-4 { grid-template-columns:repeat(2,1fr); } }
+@media(max-width:520px){ .grid-3,.grid-2,.grid-4 { grid-template-columns:1fr; } }
+.card { background:#fff; border:1px solid #eee; border-radius:8px; padding:1.25rem; display:flex; flex-direction:column; gap:8px; transition:box-shadow 0.2s; }
+.card:hover { box-shadow:0 6px 20px rgba(0,0,0,0.08); }
+.img-box { background:#f3f4f6; border-radius:6px; aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.img-box img { max-width:100%; max-height:100%; object-fit:contain; }
+select { width:100%; font-size:11px; padding:6px 8px; border:1px solid #ddd; border-radius:6px; }
+.price-row { display:flex; align-items:baseline; gap:8px; margin-top:auto; }
+.price-orig { font-size:12px; color:#bbb; text-decoration:line-through; }
+.price-disc { font-size:16px; font-weight:700; color:#991b1b; }
+.price-special { font-size:16px; font-weight:700; color:#78716c; }
+.btn { width:100%; padding:9px 12px; font-size:11px; border-radius:6px; cursor:pointer; font-weight:500; border:none; margin-top:4px; }
+.btn-primary  { background:#111; color:#fff; }
+.btn-secondary{ background:#f0efeb; color:#333; border:1px solid #ddd; }
+.btn-special  { background:#78716c; color:#fff; }
+.btn-checkout { background:#991b1b; color:#fff; }
+.divider { height:1px; background:#eee; margin:2.5rem 0; }
+</style>
 </head>
 <body>
 
-    <header class="py-12 px-6 text-center bg-white border-b border-gray-100">
-        <h1 class="text-3xl font-light tracking-[0.3em] mb-2">HAY at STORK</h1>
-        <p class="text-gray-400 text-xs tracking-widest uppercase italic">Exclusive Member Events</p>
-    </header>
+<div id="pw-gate">
+  <div class="pw-box">
+    <h2>HAY at IART</h2>
+    <p>請輸入 IART 邀請碼</p>
+    <input type="password" id="pw-input" placeholder="邀請碼">
+    <button class="pw-btn" onclick="checkPassword()">進入</button>
+    <p id="pw-error" style="color:red; display:none;">邀請碼錯誤</p>
+  </div>
+</div>
 
-    <nav class="flex justify-center space-x-6 bg-white py-4 sticky top-0 z-30 shadow-sm border-b border-gray-100">
-        <button onclick="showTab('tab1')" id="btn-tab1" class="tab-btn active-btn px-2 py-1 text-sm text-gray-500">限定組合</button>
-        <button onclick="showTab('tab2')" id="btn-tab2" class="tab-btn px-2 py-1 text-sm text-gray-500">精選折扣區</button>
-        <button onclick="showTab('tab3')" id="btn-tab3" class="tab-btn px-2 py-1 text-sm text-gray-500">所有商品</button>
-    </nav>
+<div id="main-content" style="display:none;">
+<header>
+  <h1>HAY at IART</h1>
+  <p class="sub">Exclusive Member Events</p>
+  <div class="notice">
+    <p><strong>1. 預約制：</strong>本頁面僅供「商品預約登記」，現場付款領貨。</p>
+    <p><strong>2. 優先權：</strong>依預約表單送出時間順序為主。</p>
+  </div>
+</header>
 
-    <section id="tab1" class="tab-content active max-w-6xl mx-auto p-6 space-y-16">
-        <div>
-            <h2 class="text-center text-xl font-bold mb-2 tracking-widest text-gray-400 uppercase">限定蛋寶聯名組</h2>
-            <p class="text-center text-[10px] text-gray-500 mb-8 font-light italic">購買下列組合任一組，即可獲得送子鳥限定粉藍/粉紅蛋寶吊飾一個（顏色隨機）</p>
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="product-card">
-                    <div class="img-placeholder"><img src="combo_warm.jpg"></div>
-                    <h3 class="font-bold">暖心呵護</h3>
-                    <p class="text-[10px] text-gray-400 mb-4">Crate(M) + 大毛巾 + 毛巾</p>
-                    <div class="space-y-2 mb-4">
-                        <select id="t1-c1" class="w-full text-xs border p-1 rounded"><option value="">選擇籃子顏色</option><option>淺黃</option><option>淡紫</option><option>鼠尾草綠</option><option>淺粉</option></select>
-                        <select id="t1-c2" class="w-full text-xs border p-1 rounded"><option value="">選擇毛巾系列顏色</option><option>鋼鐵藍</option><option>薰衣草</option><option>抹茶綠</option></select>
-                    </div>
-                    <p class="text-lg font-bold">NT$ 2,460</p>
-                    <button onclick="addCombo('暖心呵護', 2460, ['t1-c1', 't1-c2'])" class="w-full mt-auto bg-black text-white py-2 text-xs">加入預訂</button>
-                </div>
-                <div class="product-card">
-                    <div class="img-placeholder"><img src="combo_office.jpg"></div>
-                    <h3 class="font-bold">辦公療癒</h3>
-                    <p class="text-[10px] text-gray-400 mb-4 leading-relaxed">Tote Bag + Crate(M) + Barro Cup 杯子</p>
-                    <div class="space-y-2 mb-4">
-                        <select id="t1-c3" class="w-full text-xs border p-1 rounded"><option value="">選擇托特包顏色</option><option>海軍藍</option><option>深橄欖</option><option>薰衣草</option></select>
-                        <select id="t1-c4" class="w-full text-xs border p-1 rounded"><option value="">選擇籃子顏色</option><option>淺黃</option><option>淡紫</option><option>鼠尾草綠</option><option>淺粉</option></select>
-                    </div>
-                    <p class="text-lg font-bold">NT$ 3,260</p>
-                    <button onclick="addCombo('辦公療癒', 3260, ['t1-c3', 't1-c4'])" class="w-full mt-auto bg-black text-white py-2 text-xs">加入預訂</button>
-                </div>
-                <div class="product-card">
-                    <div class="img-placeholder"><img src="combo_tea.jpg"></div>
-                    <h3 class="font-bold">午茶食光</h3>
-                    <p class="text-[10px] text-gray-400 mb-4 leading-relaxed">Barro Plate (Ø24) + Barro Cup 杯子</p>
-                    <div class="space-y-2 mb-4">
-                        <select id="t1-c5" class="w-full text-xs border p-1 rounded"><option value="">Barro 系列顏色以現場為準</option><option>米白</option><option>深藍</option><option>綠色</option></select>
-                    </div>
-                    <p class="text-lg font-bold">NT$ 4,200</p>
-                    <button onclick="addCombo('午茶食光', 4200, ['t1-c5'])" class="w-full mt-auto bg-black text-white py-2 text-xs">加入預訂</button>
-                </div>
-            </div>
-        </div>
+<nav>
+  <button class="tab-btn active" onclick="showTab('t1',this)">限定組合</button>
+  <button class="tab-btn" onclick="showTab('t2',this)">精選折扣區</button>
+  <button class="tab-btn" onclick="showTab('t3',this)">所有商品</button>
+</nav>
 
-        <div>
-            <h2 class="text-center text-xl font-bold mb-8 tracking-widest text-gray-400 uppercase">經典初期特惠組</h2>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="product-card">
-                    <div class="img-placeholder"><img src="free_spirit.jpg"></div>
-                    <h3 class="font-bold">FREE SPIRIT 系列</h3>
-                    <p class="text-[10px] text-gray-400 mb-4">Tote Bag + Wash Bag + Slippers</p>
-                    <select id="t1-fs" class="w-full text-xs border p-1 rounded mb-4">
-                        <option value="">選擇組合款式</option>
-                        <option value="A款:群青藍+多彩+深藍">A款: 群青藍 + 多彩收納袋 + 深藍拖鞋</option>
-                        <option value="B款:罌粟紅+紅黃+奶油白">B款: 罌粟紅 + 紅黃收納袋 + 奶油白拖鞋</option>
-                    </select>
-                    <p class="text-lg font-bold text-stone-500">NT$ 1,880</p>
-                    <button onclick="addCombo('Free Spirit', 1880, ['t1-fs'])" class="w-full mt-auto bg-stone-500 text-white py-2 text-xs">加入預訂</button>
-                </div>
-                <div class="product-card">
-                    <div class="img-placeholder"><img src="modern_dweller.jpg"></div>
-                    <h3 class="font-bold">MODERN DWELLER 系列</h3>
-                    <p class="text-[10px] text-gray-400 mb-4">Everyday Tote + Laptop Cover + 蛋寶</p>
-                    <select id="t1-md" class="w-full text-xs border p-1 rounded mb-4">
-                        <option value="">選擇組合款式</option>
-                        <option value="A款:深綠+柔黃多彩+黃蛋寶">A款: 深綠 + 柔黃多彩電腦包 + 黃蛋寶</option>
-                        <option value="B款:酒紅+紫色多彩+黃蛋寶">B款: 酒紅 + 紫色多彩電腦包 + 黃蛋寶</option>
-                        <option value="C款:柔黃+午夜藍多彩+黃蛋寶">C款: 柔黃 + 午夜藍多彩電腦包 + 黃蛋寶</option>
-                    </select>
-                    <p class="text-lg font-bold text-stone-500">NT$ 3,980</p>
-                    <button onclick="addCombo('Modern Dweller', 3980, ['t1-md'])" class="w-full mt-auto bg-stone-500 text-white py-2 text-xs">加入預訂</button>
-                </div>
-            </div>
-        </div>
-    </section>
+<div id="t1" class="tab-panel active">
+  <div class="wrap">
+    <p class="section-title">限定聯名組合</p>
+    <div id="grid-t1a" class="grid-3"></div>
+    <div class="divider"></div>
+    <p class="section-title" id="t1b-title">IART 限定特惠組</p>
+    <div id="grid-t1b" class="grid-2"></div>
+  </div>
+</div>
 
-    <section id="tab2" class="tab-content max-w-6xl mx-auto p-6 space-y-12">
-        <h2 class="text-center text-xl font-bold mb-8 text-gray-400 uppercase">精選促銷方案</h2>
-        <div class="grid md:grid-cols-3 gap-6">
-            <div class="product-card">
-                <div class="img-placeholder"><img src="plan2_life.jpg"></div>
-                <h3 class="font-bold">生活美學組合</h3>
-                <p class="text-[10px] text-gray-400 mb-4">Door Mat 門墊 + Colour Crate(M)</p>
-                <div class="space-y-2 mb-4">
-                    <select id="t2-c1" class="w-full text-xs border p-1 rounded"><option value="">選擇門墊顏色</option><option>粉紅</option><option>黃色</option><option>藍色</option><option>綠色</option></select>
-                    <select id="t2-c2" class="w-full text-xs border p-1 rounded"><option value="">選擇籃子顏色</option><option>淺黃</option><option>淡紫</option><option>鼠尾草綠</option><option>淺粉</option></select>
-                </div>
-                <p class="text-lg font-bold text-red-800">NT$ 2,124</p>
-                <button onclick="addCombo('生活美學', 2124, ['t2-c1', 't2-c2'])" class="w-full mt-auto bg-black text-white py-2 text-xs">加入預訂</button>
-            </div>
-            <div class="product-card">
-                <div class="img-placeholder"><img src="plan2_light.jpg"></div>
-                <h3 class="font-bold">柔光陪伴組合</h3>
-                <p class="text-[10px] text-gray-400 mb-4">PC Portable 便攜燈 + Colour Crate(S)</p>
-                <div class="space-y-2 mb-4">
-                    <select id="t2-c3" class="w-full text-xs border p-1 rounded"><option value="">選擇燈色</option><option>淡桃</option><option>薄荷</option><option>石板藍</option><option>灰色</option><option>奶油白</option></select>
-                    <select id="t2-c4" class="w-full text-xs border p-1 rounded"><option value="">選擇籃子顏色</option><option>淺黃</option><option>淡紫</option></select>
-                </div>
-                <p class="text-lg font-bold text-red-800">NT$ 4,035</p>
-                <button onclick="addCombo('柔光陪伴', 4035, ['t2-c3', 't2-c4'])" class="w-full mt-auto bg-black text-white py-2 text-xs">加入預訂</button>
-            </div>
-            <div class="product-card">
-                <div class="img-placeholder"><img src="pao.jpg"></div>
-                <h3 class="font-bold">Pao Portable 便攜式燈</h3>
-                <p class="text-[10px] text-gray-400 mb-4 italic">單品價差折扣</p>
-                <select id="t2-c5" class="w-full text-xs border p-1 rounded mb-4"><option value="">選擇顏色</option><option>奶油白</option><option>灰色</option></select>
-                <p class="text-lg font-bold text-red-800">NT$ 5,680</p>
-                <button onclick="addCombo('Pao便攜燈', 5680, ['t2-c5'])" class="w-full mt-auto bg-black text-white py-2 text-xs">加入預訂</button>
-            </div>
-            <div class="product-card">
-                <div class="img-placeholder"><img src="basket_s.jpg"></div>
-                <h3 class="font-bold">Basket Small 洗衣籃</h3>
-                <p class="text-[10px] text-gray-400 mb-4 italic">單品價差折扣</p>
-                <select id="t2-c6" class="w-full text-xs border p-1 rounded mb-4"><option value="">選擇顏色</option><option>奶油杏仁</option><option>柔黃</option></select>
-                <p class="text-lg font-bold text-red-800">NT$ 880</p>
-                <button onclick="addCombo('洗衣籃S', 880, ['t2-c6'])" class="w-full mt-auto bg-black text-white py-2 text-xs">加入預訂</button>
-            </div>
-            <div class="product-card">
-                <div class="img-placeholder"><img src="basket_l.jpg"></div>
-                <h3 class="font-bold">Basket Large 洗衣籃</h3>
-                <p class="text-[10px] text-gray-400 mb-4 italic">顏色：淺灰</p>
-                <p class="text-lg font-bold text-red-800">NT$ 1,580</p>
-                <button onclick="addCombo('洗衣籃L', 1580, [])" class="w-full mt-auto bg-black text-white py-2 text-xs">加入預訂</button>
-            </div>
-            <div class="product-card">
-                <div class="img-placeholder"><img src="sticks.jpg"></div>
-                <h3 class="font-bold">Colour Sticks 筷子組</h3>
-                <p class="text-[10px] text-gray-400 mb-4 italic">多彩 / 4件入</p>
-                <p class="text-lg font-bold text-red-800">NT$ 1,080</p>
-                <button onclick="addCombo('筷子組', 1080, [])" class="w-full mt-auto bg-black text-white py-2 text-xs">加入預訂</button>
-            </div>
-        </div>
-    </section>
+<div id="t2" class="tab-panel">
+  <div class="wrap">
+    <p class="section-title">精選促銷方案</p>
+    <div id="grid-t2" class="grid-3"></div>
+  </div>
+</div>
 
-    <section id="tab3" class="tab-content max-w-6xl mx-auto p-6 space-y-8">
-        <h2 class="text-center text-xl font-bold mb-8 text-gray-400 uppercase tracking-widest">HAY 完整單品全集</h2>
-        <div class="grid md:grid-cols-4 gap-4">
-            <div class="product-card">
-                <div class="img-placeholder"><img src="tote.jpg"></div>
-                <h4 class="text-xs font-bold">HAY Tote Bag</h4>
-                <select id="t3-1" class="w-full text-[10px] border my-2 rounded"><option>海軍藍</option><option>深橄欖</option><option>薰衣草</option></select>
-                <p class="font-bold text-sm">NT$ 420</p>
-                <button onclick="addCombo('托特包', 420, ['t3-1'])" class="w-full mt-2 bg-gray-100 py-1 text-[10px]">預訂</button>
-            </div>
-            <div class="product-card">
-                <div class="img-placeholder"><img src="bath_towel.jpg"></div>
-                <h4 class="text-xs font-bold">Check Bath Towel</h4>
-                <select id="t3-2" class="w-full text-[10px] border my-2 rounded"><option>鋼鐵藍</option><option>薰衣草</option><option>抹茶綠</option></select>
-                <p class="font-bold text-sm">NT$ 2,980</p>
-                <button onclick="addCombo('浴巾', 2980, ['t3-2'])" class="w-full mt-2 bg-gray-100 py-1 text-[10px]">預訂</button>
-            </div>
-            <div class="product-card">
-                <div class="img-placeholder"><img src="hand_towel.jpg"></div>
-                <h4 class="text-xs font-bold">Check Hand Towel</h4>
-                <select id="t3-3" class="w-full text-[10px] border my-2 rounded"><option>鋼鐵藍</option><option>薰衣草</option><option>抹茶綠</option></select>
-                <p class="font-bold text-sm">NT$ 1,600</p>
-                <button onclick="addCombo('大毛巾', 1600, ['t3-3'])" class="w-full mt-2 bg-gray-100 py-1 text-[10px]">預訂</button>
-            </div>
-            <div class="product-card">
-                <div class="img-placeholder"><img src="wash_cloth.jpg"></div>
-                <h4 class="text-xs font-bold">Check Wash Cloth</h4>
-                <select id="t3-4" class="w-full text-[10px] border my-2 rounded"><option>鋼鐵藍</option><option>薰衣草</option><option>抹茶綠</option></select>
-                <p class="font-bold text-sm">NT$ 300</p>
-                <button onclick="addCombo('毛巾', 300, ['t3-4'])" class="w-full mt-2 bg-gray-100 py-1 text-[10px]">預訂</button>
-            </div>
-            <div class="product-card">
-                <div class="img-placeholder"><img src="crate_m.jpg"></div>
-                <h4 class="text-xs font-bold">Colour Crate (M)</h4>
-                <select id="t3-5" class="w-full text-[10px] border my-2 rounded"><option>淺黃</option><option>淡紫</option><option>鼠尾草綠</option><option>淺粉</option></select>
-                <p class="font-bold text-sm">NT$ 560</p>
-                <button onclick="addCombo('收納籃M', 560, ['t3-5'])" class="w-full mt-2 bg-gray-100 py-1 text-[10px]">預訂</button>
-            </div>
-            <div class="product-card">
-                <div class="img-placeholder"><img src="lid_m.jpg"></div>
-                <h4 class="text-xs font-bold">Colour Crate Lid (M)</h4>
-                <select id="t3-6" class="w-full text-[10px] border my-2 rounded"><option>鼠尾草綠</option><option>淺粉</option></select>
-                <p class="font-bold text-sm">NT$ 420</p>
-                <button onclick="addCombo('籃蓋M', 420, ['t3-6'])" class="w-full mt-2 bg-gray-100 py-1 text-[10px]">預訂</button>
-            </div>
-            <div class="product-card">
-                <div class="img-placeholder"><img src="enamel_plate.jpg"></div>
-                <h4 class="text-xs font-bold">Enamel Deep Plate</h4>
-                <select id="t3-7" class="w-full text-[10px] border my-2 rounded"><option>藍底小點</option><option>藍底斑點</option></select>
-                <p class="font-bold text-sm">NT$ 1,280</p>
-                <button onclick="addCombo('琺瑯餐盤', 1280, ['t3-7'])" class="w-full mt-2 bg-gray-100 py-1 text-[10px]">預訂</button>
-            </div>
-            <div class="product-card">
-                <div class="img-placeholder"><img src="enamel_cup.jpg"></div>
-                <h4 class="text-xs font-bold">Enamel Cup</h4>
-                <select id="t3-8" class="w-full text-[10px] border my-2 rounded"><option>藍底斑點</option><option>黑底斑點</option><option>咖啡底斑點</option></select>
-                <p class="font-bold text-sm">NT$ 1,080</p>
-                <button onclick="addCombo('琺瑯杯子', 1080, ['t3-8'])" class="w-full mt-2 bg-gray-100 py-1 text-[10px]">預訂</button>
-            </div>
-            <div class="product-card">
-                <div class="img-placeholder"><img src="enamel_tray.jpg"></div>
-                <h4 class="text-xs font-bold">Enamel Tray 烤盤</h4>
-                <select id="t3-9" class="w-full text-[10px] border my-2 rounded"><option>芥末黃底斑點</option><option>咖啡底斑點</option></select>
-                <p class="font-bold text-sm">NT$ 1,680</p>
-                <button onclick="addCombo('琺瑯烤盤', 1680, ['t3-9'])" class="w-full mt-2 bg-gray-100 py-1 text-[10px]">預訂</button>
-            </div>
-            <div class="product-card">
-                <div class="img-placeholder"><img src="barro_p24.jpg"></div>
-                <h4 class="text-xs font-bold">Barro Plate (Ø24) 兩件組</h4>
-                <select id="t3-10" class="w-full text-[10px] border my-2 rounded"><option>米白</option><option>深藍</option><option>綠色</option></select>
-                <p class="font-bold text-sm">NT$ 2,600</p>
-                <button onclick="addCombo('Barro餐盤24', 2600, ['t3-10'])" class="w-full mt-2 bg-gray-100 py-1 text-[10px]">預訂</button>
-            </div>
-            <div class="product-card">
-                <div class="img-placeholder"><img src="barro_p18.jpg"></div>
-                <h4 class="text-xs font-bold">Barro Plate (Ø18) 兩件組</h4>
-                <select id="t3-11" class="w-full text-[10px] border my-2 rounded"><option>米白</option><option>深藍</option><option>綠色</option></select>
-                <p class="font-bold text-sm">NT$ 2,200</p>
-                <button onclick="addCombo('Barro餐盤18', 2200, ['t3-11'])" class="w-full mt-2 bg-gray-100 py-1 text-[10px]">預訂</button>
-            </div>
-            <div class="product-card">
-                <div class="img-placeholder"><img src="barro_cup.jpg"></div>
-                <h4 class="text-xs font-bold">Barro Cup 兩件組</h4>
-                <select id="t3-12" class="w-full text-[10px] border my-2 rounded"><option>米白</option><option>深藍</option><option>綠色</option><option>粉紅</option><option>大地</option></select>
-                <p class="font-bold text-sm">NT$ 1,600</p>
-                <button onclick="addCombo('Barro杯子', 1600, ['t3-12'])" class="w-full mt-2 bg-gray-100 py-1 text-[10px]">預訂</button>
-            </div>
-            <div class="product-card">
-                <div class="img-placeholder"><img src="cutlery.jpg"></div>
-                <h4 class="text-xs font-bold">MVS Cutlery 餐具4件組</h4>
-                <select id="t3-13" class="w-full text-[10px] border my-2 rounded"><option>綠色</option><option>深藍</option></select>
-                <p class="font-bold text-sm">NT$ 2,800</p>
-                <button onclick="addCombo('餐具組', 2800, ['t3-13'])" class="w-full mt-2 bg-gray-100 py-1 text-[10px]">預訂</button>
-            </div>
-            <div class="product-card">
-                <div class="img-placeholder"><img src="tiny_vase.jpg"></div>
-                <h4 class="text-xs font-bold">Tiny Vase 迷你花瓶</h4>
-                <p class="text-[10px] text-gray-400 my-2">顏色：透明</p>
-                <p class="font-bold text-sm">NT$ 1,200</p>
-                <button onclick="addCombo('迷你花瓶', 1200, [])" class="w-full mt-2 bg-gray-100 py-1 text-[10px]">預訂</button>
-            </div>
-            <div class="product-card">
-                <div class="img-placeholder"><img src="wheels.jpg"></div>
-                <h4 class="text-xs font-bold">Wheels Set of 4 籃用輪子</h4>
-                <p class="text-[10px] text-gray-400 my-2">顏色：灰色</p>
-                <p class="font-bold text-sm">NT$ 960</p>
-                <button onclick="addCombo('籃子輪子', 960, [])" class="w-full mt-2 bg-gray-100 py-1 text-[10px]">預訂</button>
-            </div>
-        </div>
-    </section>
+<div id="t3" class="tab-panel">
+  <div class="wrap">
+    <p class="section-title">HAY 完整單品全集</p>
+    <div id="grid-t3" class="grid-4"></div>
+  </div>
+</div>
 
-    <div id="cart-box" class="fixed bottom-0 right-0 m-6 w-80 bg-white border-2 border-black p-4 shadow-2xl hidden z-50">
-        <div class="flex justify-between items-center mb-4 border-b pb-2 text-xs font-bold uppercase tracking-widest">
-            您的預訂清單
-            <button onclick="clearCart()" class="font-normal underline lowercase">清空</button>
-        </div>
-        <div id="cart-items" class="text-[10px] space-y-2 mb-4 max-h-48 overflow-y-auto font-light"></div>
-        <div class="border-t pt-2 font-bold text-sm flex justify-between">
-            <span>總額</span><span id="cart-total">NT$ 0</span>
-        </div>
-        <button onclick="checkout()" class="w-full mt-4 bg-red-800 text-white py-3 text-xs tracking-widest hover:bg-red-700">確認預訂並複製內容</button>
-    </div>
+<div id="cart-box" style="position:fixed;bottom:1.5rem;right:1.5rem;width:320px;background:#fff;border:2px solid #111;border-radius:10px;padding:1.25rem;box-shadow:0 8px 30px rgba(0,0,0,0.15);z-index:200;display:none;">
+  <div id="cart-items" style="font-size:11px;max-height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px;"></div>
+  <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;border-top:1px solid #eee;padding-top:10px;">
+    <span>總額</span><span id="cart-total">NT$ 0</span>
+  </div>
+  <button class="btn btn-checkout" onclick="checkout()">確認預訂並複製內容</button>
+</div>
+</div>
 
+<script>
+// ============================================================
+// ★ 設定區：請將你的 CSV 網址填入下方
+// ============================================================
+var SHEET_URL = ''; 
+
+// 備援資料：已移除 badge 欄位，並補完檔名
+var DEMO_DATA = [
+  {tab:'tab1a', name:'暖心呵護',    desc:'Crate(M) + 大毛巾 + 毛巾',                       price:2460, orig_price:'', colors:'籃子:淺黃,淡紫,鼠尾草綠,淺粉|毛巾系列:鋼鐵藍,薰衣草,抹茶綠', img:'combo_warm.jpg',    btn_style:'primary', section:''},
+  {tab:'tab1a', name:'辦公療癒',    desc:'Tote Bag + Crate(M) + Barro Cup 杯子',           price:3260, orig_price:'', colors:'托特包:海軍藍,深橄欖,薰衣草|籃子:淺黃,淡紫,鼠尾草綠,淺粉', img:'combo_office.jpg',  btn_style:'primary', section:''},
+  {tab:'tab1a', name:'午後食光',    desc:'Barro Plate Set of 2 (Ø24) + Barro Cup 杯子',   price:4200, orig_price:'', colors:'餐盤:米白,深藍,綠色|杯子:粉紅,天藍,大地',                  img:'combo_tea.jpg',     btn_style:'primary', section:''},
+  {tab:'tab1b', name:'FREE SPIRIT 系列',    desc:'Tote Bag + Wash Bag + Slippers', price:1880, orig_price:'', colors:'款式:A款-群青藍,B款-罌粟紅', img:'free_spirit.jpg', btn_style:'special', section:'IART 限定特惠組'},
+  {tab:'tab1b', name:'MODERN DWELLER 系列', desc:'Everyday Tote + Laptop Cover + 蛋寶',    price:3980, orig_price:'', colors:'款式:A款-深綠,B款-酒紅', img:'modern_dweller.jpg', btn_style:'special', section:'IART 限定特惠組'}
+];
+
+var selCounter = 0;
+
+function buildSelects(colorsStr) {
+  if (!colorsStr) return { html:'', ids:[] };
+  var ids = [];
+  var html = colorsStr.split('|').map(function(group) {
+    var parts = group.split(':');
+    var label = parts.length > 1 ? parts[0] : '選項';
+    var opts  = (parts.length > 1 ? parts[1] : parts[0]).split(',');
+    var sid   = 'sel_' + (++selCounter);
+    ids.push(sid);
+    var options = opts.map(function(o) {
+      return '<option>' + o + '</option>';
+    }).join('');
+    return '<select id="' + sid + '"><option value="">選擇' + label + '</option>' + options + '</select>';
+  }).join('');
+  return { html:html, ids:ids };
+}
+
+function buildCard(item) {
+  var sel     = buildSelects(item.colors);
+  var btnCls  = 'btn-' + (item.btn_style || 'primary');
+  var idsJson = JSON.stringify(sel.ids);
+
+  // 判斷價格顯示
+  var priceHtml = item.orig_price 
+    ? '<div class="price-row"><span class="price-orig">NT$ ' + Number(item.orig_price).toLocaleString() + '</span><span class="price-disc">NT$ ' + Number(item.price).toLocaleString() + '</span></div>'
+    : '<p class="price' + (item.btn_style === 'special' ? '-special' : '') + '">NT$ ' + Number(item.price).toLocaleString() + '</p>';
+
+  return '<div class="card">'
+    + '<div class="img-box"><img src="' + item.img + '" alt="' + item.name + '" onerror="this.src=\'https://via.placeholder.com/300?text=HAY\'"></div>'
+    + '<h3>' + item.name + '</h3>'
+    + (item.desc ? '<p class="desc">' + item.desc + '</p>' : '')
+    + sel.html
+    + priceHtml
+    + '<button class="btn ' + btnCls + '" onclick=\'addToCart(' + JSON.stringify(item.name) + ',' + Number(item.price) + ',' + idsJson + ')\'>預訂</button>'
+    + '</div>';
+}
+
+function renderAll(data) {
+  var buckets = { tab1a:[], tab1b:[], tab2:[], tab3:[] };
+  data.forEach(function(item) {
+    var t = (item.tab || '').trim();
+    if (buckets[t]) buckets[t].push(item);
+  });
+
+  document.getElementById('grid-t1a').innerHTML = buckets.tab1a.map(buildCard).join('');
+  
+  // 更新 Tab1b 標題
+  if (buckets.tab1b.length > 0 && buckets.tab1b[0].section) {
+      document.getElementById('t1b-title').textContent = buckets.tab1b[0].section;
+  }
+  document.getElementById('grid-t1b').innerHTML = buckets.tab1b.map(buildCard).join('');
+  document.getElementById('grid-t2').innerHTML = buckets.tab2.map(buildCard).join('');
+  document.getElementById('grid-t3').innerHTML = buckets.tab3.map(buildCard).join('');
+}
+
+function parseCSV(text) {
+  var lines  = text.trim().split('\n');
+  var headers = lines[0].split(',').map(function(h){ return h.trim().replace(/^"|"$/g,''); });
+  var result  = [];
+  for (var i = 1; i < lines.length; i++) {
+    var row = [], cur = '', inQ = false;
+    for (var c = 0; c < lines[i].length; c++) {
+      var ch = lines[i][c];
+      if (ch === '"') { inQ = !inQ; }
+      else if (ch === ',' && !inQ) { row.push(cur.trim()); cur = ''; }
+      else { cur += ch; }
+    }
+    row.push(cur.trim());
+    var obj = {};
+    headers.forEach(function(h, idx){ obj[h] = (row[idx] || '').replace(/^"|"$/g,''); });
+    if (obj.tab) result.push(obj);
+  }
+  return result;
+}
+
+function loadData() {
+  if (!SHEET_URL) { renderAll(DEMO_DATA); return; }
+  fetch(SHEET_URL)
+    .then(function(r){ return r.text(); })
+    .then(function(t){ renderAll(parseCSV(t)); });
+}
+
+function checkPassword() {
+  if (document.getElementById('pw-input').value === 'stork888') {
+    document.getElementById('pw-gate').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+    loadData();
+  } else {
+    document.getElementById('pw-error').style.display = 'block';
+  }
+}
+
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// 購物車邏輯保持不變...
+var cart = [];
+function addToCart(name, price, ids) {
+  var colors = ids.map(function(id){
+    var el = document.getElementById(id); return el ? el.value : '';
+  }).filter(function(v){ return v && v.indexOf('選擇') !== 0; }).join(' / ');
+  cart.push({ name:name, price:price, colors:colors });
+  renderCart();
+  document.getElementById('cart-box').style.display = 'block';
+}
+
+function renderCart() {
+  var html = '', total = 0;
+  cart.forEach(function(item){
+    html += '<div style="display:flex;justify-content:space-between;border-bottom:1px solid #f5f5f5;padding-bottom:6px;">'
+      + '<span>' + item.name + '<br><small style="color:#aaa;">' + item.colors + '</small></span>'
+      + '<span>NT$' + item.price.toLocaleString() + '</span></div>';
+    total += item.price;
+  });
+  document.getElementById('cart-items').innerHTML = html;
+  document.getElementById('cart-total').textContent = 'NT$ ' + total.toLocaleString();
+}
+
+function checkout() {
+  var text = '【HAY at IART 預訂清單】\n';
+  cart.forEach(function(item){ text += '- ' + item.name + ' (' + item.colors + ') NT$ ' + item.price + '\n'; });
+  navigator.clipboard.writeText(text).then(function(){
+    alert('清單已複製！');
+    window.open('你的Google表單網址','_blank');
+  });
+}
+</script>
 </body>
 </html>
