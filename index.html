@@ -5,40 +5,70 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HAY at IART | 全品項預訂系統</title>
 <style>
-/* CSS 保持不變，已確認支援 btn-special 視覺效果 */
 *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
 body { font-family:'PingFang TC','Microsoft JhengHei','Noto Sans TC',sans-serif; background:#F9F8F4; color:#333; font-size:14px; line-height:1.6; }
+
+/* 密碼門 */
 #pw-gate { position:fixed; inset:0; background:#F9F8F4; display:flex; align-items:center; justify-content:center; z-index:999; }
 .pw-box { background:#fff; border:1px solid #ddd; border-radius:10px; padding:2.5rem 2rem; text-align:center; width:320px; }
 .pw-box h2 { font-size:18px; font-weight:300; letter-spacing:0.2em; margin-bottom:6px; }
 .pw-box p { font-size:12px; color:#999; margin-bottom:1.5rem; }
 .pw-box input { width:100%; padding:10px 12px; border:1px solid #ccc; border-radius:6px; font-size:14px; font-family:inherit; margin-bottom:10px; text-align:center; letter-spacing:0.15em; }
-.pw-btn { width:100%; padding:10px; background:#111; color:#fff; border:none; border-radius:6px; font-size:13px; cursor:pointer; }
+.pw-box input:focus { outline:2px solid #333; }
+.pw-btn { width:100%; padding:10px; background:#111; color:#fff; border:none; border-radius:6px; font-size:13px; cursor:pointer; font-family:inherit; }
+.pw-btn:hover { background:#333; }
+#pw-error { color:#991b1b; font-size:12px; margin-top:10px; display:none; }
+
+/* Header */
 header { text-align:center; padding:3rem 1.5rem 1.5rem; background:#fff; border-bottom:1px solid #eee; }
 header h1 { font-size:1.8rem; font-weight:300; letter-spacing:0.3em; margin-bottom:6px; }
-.notice { max-width:560px; margin:1.2rem auto 0; background:#f5f4ef; border:1px solid #ddd; border-radius:8px; padding:1rem 1.25rem; font-size:12px; color:#555; text-align:left; }
+header .sub { font-size:11px; color:#999; letter-spacing:0.15em; text-transform:uppercase; font-style:italic; }
+.notice { max-width:560px; margin:1.2rem auto 0; background:#f5f4ef; border:1px solid #ddd; border-radius:8px; padding:1rem 1.25rem; font-size:12px; color:#555; line-height:1.9; text-align:left; }
+.notice .notice-title { font-size:13px; font-weight:700; color:#333; margin-bottom:8px; }
+.notice p { margin-bottom:4px; }
+
+/* Nav */
 nav { display:flex; justify-content:center; background:#fff; border-bottom:1px solid #eee; position:sticky; top:0; z-index:100; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
-.tab-btn { padding:14px 24px; font-size:13px; border:none; border-bottom:2px solid transparent; background:transparent; color:#888; cursor:pointer; }
+.tab-btn { padding:14px 24px; font-size:13px; border:none; border-bottom:2px solid transparent; background:transparent; color:#888; cursor:pointer; font-family:inherit; transition:color 0.2s; }
+.tab-btn:hover { color:#333; }
 .tab-btn.active { color:#111; border-bottom-color:#111; font-weight:700; }
 .tab-panel { display:none; }
 .tab-panel.active { display:block; }
+
+/* Layout */
 .wrap { max-width:1100px; margin:0 auto; padding:2rem 1.5rem; }
 .section-title { text-align:center; font-size:12px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:#aaa; margin-bottom:6px; }
+.section-note { text-align:center; font-size:11px; color:#aaa; font-style:italic; margin-bottom:1.5rem; }
 .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
 .grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; max-width:680px; margin:0 auto; }
 .grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
 @media(max-width:860px){ .grid-3,.grid-4 { grid-template-columns:repeat(2,1fr); } }
 @media(max-width:520px){ .grid-3,.grid-2,.grid-4 { grid-template-columns:1fr; } }
+
+/* Card */
 .card { background:#fff; border:1px solid #eee; border-radius:8px; padding:1.25rem; display:flex; flex-direction:column; gap:8px; transition:box-shadow 0.2s; }
 .card:hover { box-shadow:0 6px 20px rgba(0,0,0,0.08); }
-.img-box { background:#f3f4f6; border-radius:6px; aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.img-box { background:#f3f4f6; border-radius:6px; aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; overflow:hidden; margin-bottom:4px; }
 .img-box img { max-width:100%; max-height:100%; object-fit:contain; }
-select { width:100%; font-size:11px; padding:6px 8px; border:1px solid #ddd; border-radius:6px; }
-.price-row { display:flex; align-items:baseline; gap:8px; margin-top:auto; }
+.card h3 { font-size:13px; font-weight:700; }
+.card .desc { font-size:11px; color:#999; line-height:1.6; }
+
+/* Badge（蛋寶聯名標籤）*/
+.badge { display:inline-block; font-size:10px; background:#f5f0e8; color:#a08050; border:1px solid #e0d0b0; border-radius:4px; padding:2px 7px; margin-bottom:2px; }
+
+/* Form */
+select { width:100%; font-size:11px; padding:6px 8px; border:1px solid #ddd; border-radius:6px; background:#fff; color:#333; font-family:inherit; cursor:pointer; }
+
+/* Price */
+.price { font-size:16px; font-weight:700; margin-top:auto; }
+.price-row { display:flex; align-items:baseline; gap:8px; margin-top:auto; flex-wrap:wrap; }
 .price-orig { font-size:12px; color:#bbb; text-decoration:line-through; }
 .price-disc { font-size:16px; font-weight:700; color:#991b1b; }
 .price-special { font-size:16px; font-weight:700; color:#78716c; }
-.btn { width:100%; padding:9px 12px; font-size:11px; border-radius:6px; cursor:pointer; font-weight:500; border:none; margin-top:4px; }
+
+/* Buttons */
+.btn { width:100%; padding:9px 12px; font-size:11px; border-radius:6px; cursor:pointer; font-family:inherit; font-weight:500; letter-spacing:0.05em; border:none; margin-top:4px; transition:opacity 0.15s; }
+.btn:hover { opacity:0.85; }
 .btn-primary  { background:#111; color:#fff; }
 .btn-secondary{ background:#f0efeb; color:#333; border:1px solid #ddd; }
 .btn-special  { background:#78716c; color:#fff; }
@@ -48,23 +78,28 @@ select { width:100%; font-size:11px; padding:6px 8px; border:1px solid #ddd; bor
 </head>
 <body>
 
+<!-- 密碼門 -->
 <div id="pw-gate">
   <div class="pw-box">
     <h2>HAY at IART</h2>
     <p>請輸入 IART 邀請碼</p>
     <input type="password" id="pw-input" placeholder="邀請碼">
     <button class="pw-btn" onclick="checkPassword()">進入</button>
-    <p id="pw-error" style="color:red; display:none;">邀請碼錯誤</p>
+    <p id="pw-error">邀請碼錯誤，請重新輸入。</p>
   </div>
 </div>
 
+<!-- 主內容 -->
 <div id="main-content" style="display:none;">
+
 <header>
   <h1>HAY at IART</h1>
   <p class="sub">Exclusive Member Events</p>
   <div class="notice">
-    <p><strong>1. 預約制：</strong>本頁面僅供「商品預約登記」，現場付款領貨。</p>
-    <p><strong>2. 優先權：</strong>依預約表單送出時間順序為主。</p>
+    <p class="notice-title">【 訂購須知 】</p>
+    <p><strong>1. 預約制：</strong>本頁面僅供「商品預約登記」，不涉及線上金流支付。</p>
+    <p><strong>2. 完成交易：</strong>預訂成功後，請至1F愛上藝廊櫃檯現場付款領貨，方視為交易完成。</p>
+    <p><strong>3. 庫存優先權：</strong>系統依預約時間順序保留庫存，若現場實品完售，將以送出預約表單的時間順序為主。</p>
   </div>
 </header>
 
@@ -74,54 +109,121 @@ select { width:100%; font-size:11px; padding:6px 8px; border:1px solid #ddd; bor
   <button class="tab-btn" onclick="showTab('t3',this)">所有商品</button>
 </nav>
 
+<!-- Tab1：兩個區塊由 Sheet 動態產生 -->
 <div id="t1" class="tab-panel active">
   <div class="wrap">
-    <p class="section-title">限定聯名組合</p>
+    <!-- 蛋寶聯名組 -->
+    <p class="section-title">限定蛋寶聯名組</p>
+    <p class="section-note" id="t1a-note"></p>
     <div id="grid-t1a" class="grid-3"></div>
     <div class="divider"></div>
-    <p class="section-title" id="t1b-title">IART 限定特惠組</p>
+    <!-- IART 限定特惠組 -->
+    <p class="section-title" id="t1b-title"></p>
     <div id="grid-t1b" class="grid-2"></div>
   </div>
 </div>
 
+<!-- Tab2 & Tab3 -->
 <div id="t2" class="tab-panel">
   <div class="wrap">
-    <p class="section-title">精選促銷方案</p>
-    <div id="grid-t2" class="grid-3"></div>
+    <p class="section-title" style="margin-top:0.5rem;">精選促銷方案</p>
+    <div id="grid-t2" class="grid-3" style="margin-top:1rem;"></div>
   </div>
 </div>
 
 <div id="t3" class="tab-panel">
   <div class="wrap">
-    <p class="section-title">HAY 完整單品全集</p>
-    <div id="grid-t3" class="grid-4"></div>
+    <p class="section-title" style="margin-top:0.5rem;">HAY 完整單品全集</p>
+    <div id="grid-t3" class="grid-4" style="margin-top:1rem;"></div>
   </div>
 </div>
 
+<!-- 購物車 -->
 <div id="cart-box" style="position:fixed;bottom:1.5rem;right:1.5rem;width:320px;background:#fff;border:2px solid #111;border-radius:10px;padding:1.25rem;box-shadow:0 8px 30px rgba(0,0,0,0.15);z-index:200;display:none;">
+  <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;border-bottom:1px solid #eee;padding-bottom:10px;margin-bottom:10px;">
+    您的預訂清單
+    <button onclick="clearCart()" style="font-size:11px;font-weight:400;text-decoration:underline;background:none;border:none;cursor:pointer;color:#888;font-family:inherit;">清空</button>
+  </div>
   <div id="cart-items" style="font-size:11px;max-height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px;"></div>
-  <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;border-top:1px solid #eee;padding-top:10px;">
+  <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;border-top:1px solid #eee;padding-top:10px;margin-top:4px;">
     <span>總額</span><span id="cart-total">NT$ 0</span>
   </div>
-  <button class="btn btn-checkout" onclick="checkout()">確認預訂並複製內容</button>
+  <button class="btn btn-checkout" style="width:100%;margin-top:10px;padding:12px;letter-spacing:0.1em;" onclick="checkout()">確認預訂並複製內容</button>
 </div>
-</div>
+
+</div><!-- /main-content -->
 
 <script>
 // ============================================================
-// ★ 設定區：請將你的 CSV 網址填入下方
+//  ★ 設定區：貼上你的 Google Sheet CSV 網址
+//    試算表 → 檔案 → 共用 → 發布到網路
+//    → 選擇工作表 → 逗號分隔值(.csv) → 發布 → 複製連結
 // ============================================================
-var SHEET_URL = ''; 
+var SHEET_URL = '';
 
-// 備援資料：已移除 badge 欄位，並補完檔名
+
+// ============================================================
+//  預覽 / 備援資料（SHEET_URL 空白時自動使用）
+//
+//  欄位說明：
+//  tab         : tab1a（蛋寶聯名） / tab1b（IART特惠） / tab2 / tab3
+//  name        : 商品名稱
+//  desc        : 副說明（可空白）
+//  price       : 售價（數字）
+//  orig_price  : 原價，空白＝不顯示劃線原價（tab2折扣用）
+//  colors      : 下拉選單。格式：「標籤:選項1,選項2」
+//                多個選單用「|」分隔：「籃子:淺黃,淡紫|毛巾:鋼鐵藍,薰衣草」
+//                售完：在顏色後直接加「售完」→「深藍售完」
+//  img         : 圖片檔名
+//  badge       : 小標籤文字（蛋寶聯名用），空白＝不顯示
+//  btn_style   : primary（黑）/ special（棕）/ secondary（灰）
+//  section     : tab1b 用，填入區塊標題（同一區塊填一樣）
+// ============================================================
 var DEMO_DATA = [
-  {tab:'tab1a', name:'暖心呵護',    desc:'Crate(M) + 大毛巾 + 毛巾',                       price:2460, orig_price:'', colors:'籃子:淺黃,淡紫,鼠尾草綠,淺粉|毛巾系列:鋼鐵藍,薰衣草,抹茶綠', img:'combo_warm.jpg',    btn_style:'primary', section:''},
-  {tab:'tab1a', name:'辦公療癒',    desc:'Tote Bag + Crate(M) + Barro Cup 杯子',           price:3260, orig_price:'', colors:'托特包:海軍藍,深橄欖,薰衣草|籃子:淺黃,淡紫,鼠尾草綠,淺粉', img:'combo_office.jpg',  btn_style:'primary', section:''},
-  {tab:'tab1a', name:'午後食光',    desc:'Barro Plate Set of 2 (Ø24) + Barro Cup 杯子',   price:4200, orig_price:'', colors:'餐盤:米白,深藍,綠色|杯子:粉紅,天藍,大地',                  img:'combo_tea.jpg',     btn_style:'primary', section:''},
-  {tab:'tab1b', name:'FREE SPIRIT 系列',    desc:'Tote Bag + Wash Bag + Slippers', price:1880, orig_price:'', colors:'款式:A款-群青藍,B款-罌粟紅', img:'free_spirit.jpg', btn_style:'special', section:'IART 限定特惠組'},
-  {tab:'tab1b', name:'MODERN DWELLER 系列', desc:'Everyday Tote + Laptop Cover + 蛋寶',    price:3980, orig_price:'', colors:'款式:A款-深綠,B款-酒紅', img:'modern_dweller.jpg', btn_style:'special', section:'IART 限定特惠組'}
+
+  // ── Tab1a：限定蛋寶聯名組 ──────────────────────────────
+  {tab:'tab1a', name:'暖心呵護',    desc:'Crate(M) + 大毛巾 + 毛巾',                       price:2460, orig_price:'', colors:'籃子:淺黃,淡紫,鼠尾草綠,淺粉|毛巾系列:鋼鐵藍,薰衣草,抹茶綠', img:'combo_warm.jpg',    badge:'蛋寶吊飾贈品',  btn_style:'primary', section:''},
+  {tab:'tab1a', name:'辦公療癒',    desc:'Tote Bag + Crate(M) + Barro Cup 杯子',           price:3260, orig_price:'', colors:'托特包:海軍藍,深橄欖,薰衣草|籃子:淺黃,淡紫,鼠尾草綠,淺粉', img:'combo_office.jpg',  badge:'蛋寶吊飾贈品',  btn_style:'primary', section:''},
+  {tab:'tab1a', name:'午後食光',    desc:'Barro Plate Set of 2 (Ø24) + Barro Cup 杯子',   price:4200, orig_price:'', colors:'餐盤:米白,深藍,綠色|杯子:粉紅,天藍,大地',                  img:'combo_tea.jpg',     badge:'蛋寶吊飾贈品',  btn_style:'primary', section:''},
+
+  // ── Tab1b：IART 限定特惠組 ────────────────────────────
+  {tab:'tab1b', name:'FREE SPIRIT 系列',    desc:'Tote Bag + Wash Bag + Slippers', price:1880, orig_price:'', colors:'款式:A款-群青藍+多彩收納袋+深藍拖鞋,B款-罌粟紅+紅黃收納袋+奶油白拖鞋', img:'free_spirit.jpg',   badge:'', btn_style:'special', section:'IART 限定特惠組'},
+  {tab:'tab1b', name:'MODERN DWELLER 系列', desc:'Everyday Tote + Laptop Cover + 蛋寶',    price:3980, orig_price:'', colors:'款式:A款-深綠+柔黃多彩電腦包+黃蛋寶,B款-酒紅+紫色多彩電腦包+黃蛋寶,C款-柔黃+午夜藍多彩電腦包+黃蛋寶', img:'modern_dweller.jpg', badge:'', btn_style:'special', section:'IART 限定特惠組'},
+
+  // ── Tab2：精選折扣區 ──────────────────────────────────
+  {tab:'tab2', name:'生活美學組合',          desc:'Door Mat 門墊 + Colour Crate(M)',       price:2124, orig_price:2360, colors:'門墊:粉紅,黃色,藍色,綠色|籃子:淺黃,淡紫,鼠尾草綠,淺粉', img:'plan2_life.jpg',  badge:'', btn_style:'primary', section:''},
+  {tab:'tab2', name:'柔光陪伴組合',          desc:'PC Portable 便攜燈 + Colour Crate(S)', price:4035, orig_price:4480, colors:'燈色:淡桃,薄荷,石板藍,灰色,奶油白|籃子:淺黃,淡紫',     img:'plan2_light.jpg', badge:'', btn_style:'primary', section:''},
+  {tab:'tab2', name:'Pao Portable 便攜式燈', desc:'單品價差折扣',                          price:5680, orig_price:6200, colors:'顏色:奶油白,灰色',                                       img:'pao.jpg',         badge:'', btn_style:'primary', section:''},
+  {tab:'tab2', name:'Basket Small 洗衣籃',   desc:'單品價差折扣',                          price:880,  orig_price:980,  colors:'顏色:奶油杏仁,柔黃',                                    img:'basket_s.jpg',    badge:'', btn_style:'primary', section:''},
+  {tab:'tab2', name:'Basket Large 洗衣籃',   desc:'顏色：淺灰',                            price:1580, orig_price:1800, colors:'',                                                      img:'basket_l.jpg',    badge:'', btn_style:'primary', section:''},
+  {tab:'tab2', name:'Colour Sticks 筷子組',  desc:'多彩 / 4件入',                          price:1080, orig_price:1280, colors:'',                                                      img:'sticks.jpg',      badge:'', btn_style:'primary', section:''},
+
+  // ── Tab3：所有商品 ────────────────────────────────────
+  {tab:'tab3', name:'HAY Tote Bag',               desc:'',          price:420,  orig_price:'', colors:'顏色:海軍藍,深橄欖,薰衣草',               img:'tote.jpg',           badge:'', btn_style:'secondary', section:''},
+  {tab:'tab3', name:'Check Bath Towel',            desc:'',          price:2980, orig_price:'', colors:'顏色:鋼鐵藍,薰衣草,抹茶綠',               img:'bath_towel.jpg',      badge:'', btn_style:'secondary', section:''},
+  {tab:'tab3', name:'Check Hand Towel',            desc:'',          price:1600, orig_price:'', colors:'顏色:鋼鐵藍,薰衣草,抹茶綠',               img:'hand_towel.jpg',      badge:'', btn_style:'secondary', section:''},
+  {tab:'tab3', name:'Check Wash Cloth',            desc:'',          price:300,  orig_price:'', colors:'顏色:鋼鐵藍,薰衣草,抹茶綠',               img:'wash_cloth.jpg',      badge:'', btn_style:'secondary', section:''},
+  {tab:'tab3', name:'HAY Colour Crate (M)',         desc:'',          price:560,  orig_price:'', colors:'顏色:淺黃,淡紫,鼠尾草綠,淺粉',            img:'crate_m.jpg',         badge:'', btn_style:'secondary', section:''},
+  {tab:'tab3', name:'HAY Colour Crate (S)',         desc:'',          price:280,  orig_price:'', colors:'顏色:淺黃,淡紫',                           img:'crate_s.jpg',         badge:'', btn_style:'secondary', section:''},
+  {tab:'tab3', name:'Colour Crate Lid (M)',         desc:'',          price:420,  orig_price:'', colors:'顏色:鼠尾草綠,淺粉',                       img:'lid_m.jpg',           badge:'', btn_style:'secondary', section:''},
+  {tab:'tab3', name:'PC Portable 便攜式燈',         desc:'',          price:4200, orig_price:'', colors:'顏色:淡桃,石板藍,薄荷,奶油白,灰色',        img:'pc_portable.jpg',     badge:'', btn_style:'secondary', section:''},
+  {tab:'tab3', name:'Enamel Cup',                   desc:'',          price:1080, orig_price:'', colors:'顏色:藍底斑點,黑底斑點,咖啡底斑點',         img:'enamel_cup.jpg',      badge:'', btn_style:'secondary', section:''},
+  {tab:'tab3', name:'Enamel Tray Rectangular 烤盤', desc:'',          price:1680, orig_price:'', colors:'顏色:芥末黃底斑點售完,咖啡底斑點',          img:'enamel_tray.jpg',     badge:'', btn_style:'secondary', section:''},
+  {tab:'tab3', name:'Barro Plate Set of 2 (Ø24)',  desc:'',          price:2600, orig_price:'', colors:'顏色:米白,深藍,綠色',                       img:'barro_p24.jpg',       badge:'', btn_style:'secondary', section:''},
+  {tab:'tab3', name:'Barro Plate Set of 2 (Ø18)',  desc:'',          price:2200, orig_price:'', colors:'顏色:深藍售完,綠色',                        img:'barro_p18.jpg',       badge:'', btn_style:'secondary', section:''},
+  {tab:'tab3', name:'Barro Cup Set of 2',           desc:'',          price:1600, orig_price:'', colors:'顏色:粉紅,天藍,大地',                       img:'barro_cup.jpg',       badge:'', btn_style:'secondary', section:''},
+  {tab:'tab3', name:'Borosilicate Mug Set of 2',    desc:'',          price:2280, orig_price:'', colors:'顏色:淺藍,翡翠綠',                          img:'borosilicate_mug.jpg',badge:'', btn_style:'secondary', section:''},
+  {tab:'tab3', name:'MVS Cutlery 餐具4件組',        desc:'',          price:2800, orig_price:'', colors:'顏色:綠色,深藍',                            img:'cutlery.jpg',         badge:'', btn_style:'secondary', section:''},
+  {tab:'tab3', name:'Colour Sticks Set of 4 筷子組',desc:'顏色：多彩',price:1080, orig_price:'', colors:'',                                          img:'sticks.jpg',          badge:'', btn_style:'secondary', section:''},
+  {tab:'tab3', name:'Door Mat 門墊',                desc:'',          price:1800, orig_price:'', colors:'顏色:粉紅色,黃色,藍色,綠色',                img:'door_mat.jpg',        badge:'', btn_style:'secondary', section:''},
+  {tab:'tab3', name:'Tiny Vase 迷你花瓶',           desc:'顏色：透明',price:1200, orig_price:'', colors:'',                                          img:'tiny_vase.jpg',       badge:'', btn_style:'secondary', section:''},
+  {tab:'tab3', name:'Wheels Set of 4 籃用輪子',     desc:'顏色：灰色',price:960,  orig_price:'', colors:'',                                          img:'wheels.jpg',          badge:'', btn_style:'secondary', section:''},
 ];
 
+
+// ============================================================
+//  核心渲染邏輯（不需要修改以下內容）
+// ============================================================
 var selCounter = 0;
 
 function buildSelects(colorsStr) {
@@ -129,12 +231,14 @@ function buildSelects(colorsStr) {
   var ids = [];
   var html = colorsStr.split('|').map(function(group) {
     var parts = group.split(':');
-    var label = parts.length > 1 ? parts[0] : '選項';
+    var label = parts.length > 1 ? parts[0] : '顏色';
     var opts  = (parts.length > 1 ? parts[1] : parts[0]).split(',');
     var sid   = 'sel_' + (++selCounter);
     ids.push(sid);
     var options = opts.map(function(o) {
-      return '<option>' + o + '</option>';
+      var sold = o.indexOf('售完') !== -1;
+      return '<option' + (sold ? ' style="color:#bbb;" disabled' : '') + '>'
+        + (sold ? o + '（售完）' : o) + '</option>';
     }).join('');
     return '<select id="' + sid + '"><option value="">選擇' + label + '</option>' + options + '</select>';
   }).join('');
@@ -144,20 +248,29 @@ function buildSelects(colorsStr) {
 function buildCard(item) {
   var sel     = buildSelects(item.colors);
   var btnCls  = 'btn-' + (item.btn_style || 'primary');
+  var btnText = item.orig_price ? '加入預訂' : '預訂';
   var idsJson = JSON.stringify(sel.ids);
 
-  // 判斷價格顯示
-  var priceHtml = item.orig_price 
-    ? '<div class="price-row"><span class="price-orig">NT$ ' + Number(item.orig_price).toLocaleString() + '</span><span class="price-disc">NT$ ' + Number(item.price).toLocaleString() + '</span></div>'
-    : '<p class="price' + (item.btn_style === 'special' ? '-special' : '') + '">NT$ ' + Number(item.price).toLocaleString() + '</p>';
+  var priceHtml = item.orig_price
+    ? '<div class="price-row"><span class="price-orig">NT$ ' + Number(item.orig_price).toLocaleString()
+      + '</span><span class="price-disc">NT$ ' + Number(item.price).toLocaleString() + '</span></div>'
+    : '<p class="price' + (item.btn_style === 'special' ? '-special' : '') + '">NT$ '
+      + Number(item.price).toLocaleString() + '</p>';
+
+  var badgeHtml = item.badge ? '<span class="badge">＋' + item.badge + '</span>' : '';
+  var descHtml  = item.desc  ? '<p class="desc">' + item.desc + '</p>' : '';
 
   return '<div class="card">'
-    + '<div class="img-box"><img src="' + item.img + '" alt="' + item.name + '" onerror="this.src=\'https://via.placeholder.com/300?text=HAY\'"></div>'
+    + '<div class="img-box"><img src="' + item.img + '" alt="' + item.name
+    + '" onerror="this.parentNode.style.background=\'#f3f4f6\'"></div>'
+    + badgeHtml
     + '<h3>' + item.name + '</h3>'
-    + (item.desc ? '<p class="desc">' + item.desc + '</p>' : '')
+    + descHtml
     + sel.html
     + priceHtml
-    + '<button class="btn ' + btnCls + '" onclick=\'addToCart(' + JSON.stringify(item.name) + ',' + Number(item.price) + ',' + idsJson + ')\'>預訂</button>'
+    + '<button class="btn ' + btnCls + '" onclick=\'addToCart('
+    + JSON.stringify(item.name) + ',' + Number(item.price) + ',' + idsJson + ')\'>'
+    + btnText + '</button>'
     + '</div>';
 }
 
@@ -168,13 +281,15 @@ function renderAll(data) {
     if (buckets[t]) buckets[t].push(item);
   });
 
+  // Tab1a
   document.getElementById('grid-t1a').innerHTML = buckets.tab1a.map(buildCard).join('');
-  
-  // 更新 Tab1b 標題
-  if (buckets.tab1b.length > 0 && buckets.tab1b[0].section) {
-      document.getElementById('t1b-title').textContent = buckets.tab1b[0].section;
-  }
+
+  // Tab1b — 讀取第一筆的 section 作為標題
+  var t1bTitle = (buckets.tab1b[0] && buckets.tab1b[0].section) ? buckets.tab1b[0].section : 'IART 限定特惠組';
+  document.getElementById('t1b-title').textContent = t1bTitle;
   document.getElementById('grid-t1b').innerHTML = buckets.tab1b.map(buildCard).join('');
+
+  // Tab2 & Tab3
   document.getElementById('grid-t2').innerHTML = buckets.tab2.map(buildCard).join('');
   document.getElementById('grid-t3').innerHTML = buckets.tab3.map(buildCard).join('');
 }
@@ -184,6 +299,7 @@ function parseCSV(text) {
   var headers = lines[0].split(',').map(function(h){ return h.trim().replace(/^"|"$/g,''); });
   var result  = [];
   for (var i = 1; i < lines.length; i++) {
+    // 處理帶引號的 CSV 欄位（逗號在引號內不切割）
     var row = [], cur = '', inQ = false;
     for (var c = 0; c < lines[i].length; c++) {
       var ch = lines[i][c];
@@ -203,9 +319,11 @@ function loadData() {
   if (!SHEET_URL) { renderAll(DEMO_DATA); return; }
   fetch(SHEET_URL)
     .then(function(r){ return r.text(); })
-    .then(function(t){ renderAll(parseCSV(t)); });
+    .then(function(t){ renderAll(parseCSV(t)); })
+    .catch(function(){ console.warn('Sheet 載入失敗，使用預設資料'); renderAll(DEMO_DATA); });
 }
 
+// 密碼
 function checkPassword() {
   if (document.getElementById('pw-input').value === 'stork888') {
     document.getElementById('pw-gate').style.display = 'none';
@@ -215,7 +333,13 @@ function checkPassword() {
     document.getElementById('pw-error').style.display = 'block';
   }
 }
+document.addEventListener('DOMContentLoaded', function(){
+  document.getElementById('pw-input').addEventListener('keydown', function(e){
+    if (e.key === 'Enter') checkPassword();
+  });
+});
 
+// Tab 切換
 function showTab(id, btn) {
   document.querySelectorAll('.tab-panel').forEach(function(t){ t.classList.remove('active'); });
   document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
@@ -223,7 +347,7 @@ function showTab(id, btn) {
   btn.classList.add('active');
 }
 
-// 購物車邏輯保持不變...
+// 購物車
 var cart = [];
 function addToCart(name, price, ids) {
   var colors = ids.map(function(id){
@@ -233,26 +357,35 @@ function addToCart(name, price, ids) {
   renderCart();
   document.getElementById('cart-box').style.display = 'block';
 }
-
 function renderCart() {
   var html = '', total = 0;
   cart.forEach(function(item){
-    html += '<div style="display:flex;justify-content:space-between;border-bottom:1px solid #f5f5f5;padding-bottom:6px;">'
-      + '<span>' + item.name + '<br><small style="color:#aaa;">' + item.colors + '</small></span>'
-      + '<span>NT$' + item.price.toLocaleString() + '</span></div>';
+    html += '<div style="display:flex;justify-content:space-between;border-bottom:1px solid #f5f5f5;padding-bottom:6px;gap:8px;">'
+      + '<span><span style="font-weight:500;">' + item.name + '</span>'
+      + (item.colors ? '<br><span style="color:#aaa;font-size:10px;">' + item.colors + '</span>' : '')
+      + '</span><span style="white-space:nowrap;">NT$' + item.price.toLocaleString() + '</span></div>';
     total += item.price;
   });
   document.getElementById('cart-items').innerHTML = html;
   document.getElementById('cart-total').textContent = 'NT$ ' + total.toLocaleString();
 }
-
+function clearCart() {
+  cart = []; renderCart();
+  document.getElementById('cart-box').style.display = 'none';
+}
 function checkout() {
-  var text = '【HAY at IART 預訂清單】\n';
+  var text = '【HAY at IART 預訂申請】\n';
   cart.forEach(function(item){ text += '- ' + item.name + ' (' + item.colors + ') NT$ ' + item.price + '\n'; });
-  navigator.clipboard.writeText(text).then(function(){
-    alert('清單已複製！');
-    window.open('你的Google表單網址','_blank');
-  });
+  text += '\n總計金額：NT$ ' + cart.reduce(function(a,b){return a+b.price;},0).toLocaleString() + '\n\n※請將此內容貼上至表單備註。';
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text)
+      .then(function(){
+        alert('清單已複製！即將轉往預訂表單。');
+        window.open('https://docs.google.com/forms/d/e/1FAIpQLSfMJN09-IEJ-3DiNYYiqCWelztKaOmp305_hpbOMk0QG0watw/viewform?usp=sf_link','_blank');
+      }).catch(function(){ alert('複製失敗，請手動複製：\n\n' + text); });
+  } else {
+    alert('請手動複製以下內容：\n\n' + text);
+  }
 }
 </script>
 </body>
