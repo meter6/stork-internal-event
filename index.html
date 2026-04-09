@@ -149,9 +149,11 @@ function buildCard(item) {
       var sid = sidPrefix + '_' + idx;
       selIds.push(sid);
       return `<select id="${sid}"><option value="">選擇${label}</option>${opts.map(o => {
-  var sold = o.indexOf('售完') !== -1;
-  return '<option' + (sold ? ' style="color:#bbb;" disabled' : '') + '>' + o + '</option>';
-}).join('')}</select>`;
+        var sold = o.indexOf('售完') !== -1;
+        return '<option' + (sold ? ' style="color:#bbb;" disabled' : '') + '>' + o + '</option>';
+      }).join('')}</select>`;
+    }).join('');
+  }
 
   var priceHtml = item.orig_price 
     ? `<div class="price-row"><span class="price-orig">NT$ ${Number(item.orig_price).toLocaleString()}</span><span class="price-disc">NT$ ${Number(item.price).toLocaleString()}</span></div>`
