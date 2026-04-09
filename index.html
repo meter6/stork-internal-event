@@ -145,7 +145,7 @@ function buildCard(item) {
     selHtml = item.colors.split('|').map((group, idx) => {
       var parts = group.split(':');
       var label = parts.length > 1 ? parts[0] : '選項';
-      var opts = (parts.length > 1 ? parts[1] : parts[0]).split(',');
+      var opts = (parts.length > 1 ? parts[1] : parts[0]).split(',').map(function(o){ return o.trim(); });
       var sid = sidPrefix + '_' + idx;
       selIds.push(sid);
       return `<select id="${sid}"><option value="">選擇${label}</option>${opts.map(o => `<option>${o}</option>`).join('')}</select>`;
